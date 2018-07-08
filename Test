@@ -1,0 +1,347 @@
+package com.laptopupcycle.ethan.laptopupcycle2_0version2;
+
+import android.nfc.Tag;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Exclude;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.w3c.dom.Document;
+
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
+
+
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
+
+
+
+
+
+
+public class LaptopData extends AppCompatActivity {
+
+    // All of these variables are strings. For anything that should be an int or boolean, get over it
+    private String dateRecieved;
+    private String id; // Same thing as control number
+    private String make;
+    private String model;
+    private String serialNumber;
+    private String dateLogged;
+    private String processedBy;
+    private String donorName;
+    private String donorAddress;
+    private String donorAddedToMailingLists;
+    private String thankYouNoteSent;
+    private String hasCharger;
+    private String turnsOn;
+    private String bit;
+    private String os;
+    private String notes;
+
+    public Map<String, Object> toMap() {
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("Date Received", dateRecieved);
+        result.put("ID/Control Number", id);
+        result.put("Make", make);
+        result.put("Model", model);
+        result.put("Serial Number", serialNumber);
+        result.put("Date Logged", dateLogged);
+        result.put("Processed By", processedBy);
+        result.put("Donor Name", donorName);
+        result.put("Donor Address", donorAddress);
+        result.put("Donor Added to Mailing List", donorAddedToMailingLists);
+        result.put("Thank You Note Sent", thankYouNoteSent);
+        result.put("Has Charger", hasCharger);
+        result.put("Turns On", turnsOn);
+        result.put("Bit", bit);
+        result.put("OS", os);
+        result.put("Notes", notes);
+
+
+
+        return result;
+    }
+
+
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_laptop_data);
+        FirebaseApp.initializeApp(this);
+        Button submitID = (Button) findViewById(R.id.submitID);
+
+        Button findID = (Button) findViewById(R.id.findID);
+
+        Button updateData = (Button) findViewById(R.id.updateAll);
+
+        final FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+
+        submitID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final EditText idBox = (EditText) findViewById(R.id.idText);
+                id = (idBox.getText().toString().trim());
+
+                final EditText makeBox = (EditText) findViewById(R.id.makeText);
+                make = (makeBox.getText().toString().trim());
+
+                final EditText modelBox = (EditText) findViewById(R.id.modelText);
+                model = (modelBox.getText().toString().trim());
+
+                final EditText osBox = (EditText) findViewById(R.id.osText);
+                os = (osBox.getText().toString().trim());
+
+                final EditText serialBox = (EditText) findViewById(R.id.serialNumberText);
+                serialNumber = (serialBox.getText().toString().trim());
+
+                final EditText dateReceivedBox = (EditText) findViewById(R.id.dateReceivedText);
+                dateRecieved = (dateReceivedBox.getText().toString().trim());
+
+                final EditText dateLoggedBox = (EditText) findViewById(R.id.dateLoggedText);
+                dateLogged = (dateLoggedBox.getText().toString().trim());
+
+                final EditText processedBox = (EditText) findViewById(R.id.processedByText);
+                processedBy = (processedBox.getText().toString().trim());
+
+                final EditText donorNameBox = (EditText) findViewById(R.id.donorNameText);
+                donorName = (donorNameBox.getText().toString().trim());
+
+                final EditText addressBox = (EditText) findViewById(R.id.donorAddressText);
+                donorAddress = (addressBox.getText().toString().trim());
+
+                final EditText listBox = (EditText) findViewById(R.id.mailingListText);
+                donorAddedToMailingLists = (listBox.getText().toString().trim());
+
+                final EditText thankBox = (EditText) findViewById(R.id.thankYouText);
+                thankYouNoteSent = (thankBox.getText().toString().trim());
+
+                final EditText chargerBox = (EditText) findViewById(R.id.hasChargerText);
+                hasCharger = (chargerBox.getText().toString().trim());
+
+                final EditText turnBox = (EditText) findViewById(R.id.turnsOnText);
+                turnsOn = (turnBox.getText().toString().trim());
+
+                final EditText bitBox = (EditText) findViewById(R.id.bitText);
+                bit = (bitBox.getText().toString().trim());
+
+                final EditText notesBox = (EditText) findViewById(R.id.notesText);
+                notes = (notesBox.getText().toString().trim());
+
+
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                db.collection("Laptops").document(id).set(toMap());
+
+                //PdfWriter writer = null;
+                //try {
+                //    writer = new PdfWriter(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS));
+                //} catch (FileNotFoundException e) {
+                //    e.printStackTrace();
+                //}
+
+               // PdfDocument pdf = new PdfDocument(writer);
+               // com.itextpdf.layout.Document document = new com.itextpdf.layout.Document(pdf);
+               // document.add(new Paragraph("Hello World"));
+               // document.close();
+
+                //db.collection(id).add(toMap());
+
+
+                //Map<String, Object> dateData = new HashMap<>();
+                //dateData.put("Date Received", dateRecieved);
+                //db.collection(id).add(dateData);
+
+                //Map<String, Object> aa = new HashMap<>();
+                //aa.put("murtaza", "ameen");
+                //db.collection("murtaza").add(aa);
+
+                //Map<String, Object> bb = new HashMap<>();
+                //bb.put("meme", "more memes");
+                //db.collection("even more memes").add(bb);
+
+                //Map<String, Object> cc = new HashMap<>();
+                //cc.put("memdde", "more measdmes");
+                //db.collection("even more asdfmemes").add(cc);
+            }
+        });
+
+        findID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                final EditText idBox = (EditText) findViewById(R.id.idText);
+                id = (idBox.getText().toString().trim());
+
+                DocumentReference docRef = db.collection("Laptops").document(id); // Gets the data for the specific laptop
+
+                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful())
+                        {
+                            DocumentSnapshot document = task.getResult();
+                            // Fill in all the text boxes, the user can update what they want, then use the update method to update the info in the firebase
+                            dateRecieved = document.getString("Date Received");
+                            final EditText dateReceivedBox = (EditText) findViewById(R.id.dateReceivedText);
+                            dateReceivedBox.setText(dateRecieved, TextView.BufferType.EDITABLE);
+
+                            make = document.getString("Make");
+                            final EditText makeBox = (EditText) findViewById(R.id.makeText);
+                            makeBox.setText(make, TextView.BufferType.EDITABLE);
+
+                            model = document.getString("Model");
+                            final EditText modelBox = (EditText) findViewById(R.id.modelText);
+                            modelBox.setText(model, TextView.BufferType.EDITABLE);
+
+                            os = document.getString("OS");
+                            final EditText osBox = (EditText) findViewById(R.id.osText);
+                            osBox.setText(os, TextView.BufferType.EDITABLE);
+
+                            serialNumber = document.getString("Serial Number");
+                            final EditText serialBox = (EditText) findViewById(R.id.serialNumberText);
+                            serialBox.setText(serialNumber, TextView.BufferType.EDITABLE);
+
+                            dateLogged = document.getString("Date Logged");
+                            final EditText dateLoggedBox = (EditText) findViewById(R.id.dateLoggedText);
+                            dateLoggedBox.setText(dateLogged, TextView.BufferType.EDITABLE);
+
+                            processedBy = document.getString("Processed By");
+                            final EditText processedBydBox = (EditText) findViewById(R.id.processedByText);
+                            processedBydBox.setText(processedBy, TextView.BufferType.EDITABLE);
+
+                            donorName = document.getString("Donor Name");
+                            final EditText donorNameBox = (EditText) findViewById(R.id.donorNameText);
+                            donorNameBox.setText(donorName, TextView.BufferType.EDITABLE);
+
+                            donorAddress = document.getString("Donor Address");
+                            final EditText donorAddressBox = (EditText) findViewById(R.id.donorAddressText);
+                            donorAddressBox.setText(donorAddress, TextView.BufferType.EDITABLE);
+
+                            donorAddedToMailingLists = document.getString("Donor Added to Mailing List");
+                            final EditText mailingListBox = (EditText) findViewById(R.id.mailingListText);
+                            mailingListBox.setText(donorAddedToMailingLists, TextView.BufferType.EDITABLE);
+
+                            thankYouNoteSent = document.getString("Thank You Note Sent");
+                            final EditText thankYouBox = (EditText) findViewById(R.id.thankYouText);
+                            thankYouBox.setText(thankYouNoteSent, TextView.BufferType.EDITABLE);
+
+                            hasCharger = document.getString("Has Charger");
+                            final EditText hasChargerBox = (EditText) findViewById(R.id.hasChargerText);
+                            hasChargerBox.setText(hasCharger, TextView.BufferType.EDITABLE);
+
+                            turnsOn = document.getString("Turns On");
+                            final EditText turnsOnBox = (EditText) findViewById(R.id.turnsOnText);
+                            turnsOnBox.setText(turnsOn, TextView.BufferType.EDITABLE);
+
+                            bit = document.getString("Bit");
+                            final EditText bitBox = (EditText) findViewById(R.id.bitText);
+                            bitBox.setText(bit, TextView.BufferType.EDITABLE);
+
+                            notes = document.getString("Notes");
+                            final EditText notesBox = (EditText) findViewById(R.id.notesText);
+                            notesBox.setText(notes, TextView.BufferType.EDITABLE);
+
+
+                        }
+                    }
+                });
+
+            }
+        });
+
+        updateData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DocumentReference docRef = db.collection("Laptops").document(id);
+                // Updates entries in the firebase
+                EditText dateReceivedBox = (EditText) findViewById(R.id.dateReceivedText);
+                dateRecieved = (dateReceivedBox.getText().toString().trim());
+                docRef.update("Date Received", dateRecieved);
+
+                EditText makeBox = (EditText) findViewById(R.id.makeText);
+                make = (makeBox.getText().toString().trim());
+                docRef.update("Make", make);
+
+                EditText modelBox = (EditText) findViewById(R.id.modelText);
+                model = (modelBox.getText().toString().trim());
+                docRef.update("Model", model);
+
+                EditText osBox = (EditText) findViewById(R.id.osText);
+                os = (osBox.getText().toString().trim());
+                docRef.update("OS", os);
+
+                EditText serialNumberBox = (EditText) findViewById(R.id.serialNumberText);
+                serialNumber = (serialNumberBox.getText().toString().trim());
+                docRef.update("Serial Number", serialNumber);
+
+                EditText datedLoggedBox = (EditText) findViewById(R.id.dateLoggedText);
+                dateLogged = (datedLoggedBox.getText().toString().trim());
+                docRef.update("Date Logged", dateLogged);
+
+                EditText processedByBox = (EditText) findViewById(R.id.processedByText);
+                processedBy = (processedByBox.getText().toString().trim());
+                docRef.update("Processed By", processedBy);
+
+                EditText donorNameBox = (EditText) findViewById(R.id.donorNameText);
+                donorName = (donorNameBox.getText().toString().trim());
+                docRef.update("Donor Name", donorName);
+
+                EditText donorAddressBox = (EditText) findViewById(R.id.donorAddressText);
+                donorAddress = (donorAddressBox.getText().toString().trim());
+                docRef.update("Donor Address", donorAddress);
+
+                EditText mailingListBox = (EditText) findViewById(R.id.mailingListText);
+                donorAddedToMailingLists = (mailingListBox.getText().toString().trim());
+                docRef.update("Donor Added to Mailing List", donorAddedToMailingLists);
+
+                EditText thankYouBox = (EditText) findViewById(R.id.thankYouText);
+                thankYouNoteSent = (thankYouBox.getText().toString().trim());
+                docRef.update("Thank You Note Sent", thankYouNoteSent);
+
+                EditText hasChargerBox = (EditText) findViewById(R.id.hasChargerText);
+                hasCharger = (hasChargerBox.getText().toString().trim());
+                docRef.update("Has Charger", hasCharger);
+
+                EditText turnsOnBox = (EditText) findViewById(R.id.turnsOnText);
+                turnsOn = (turnsOnBox.getText().toString().trim());
+                docRef.update("Turns On", turnsOn);
+
+                EditText bitBox = (EditText) findViewById(R.id.bitText);
+                bit = (bitBox.getText().toString().trim());
+                docRef.update("Bit", bit);
+
+                EditText notesBox = (EditText) findViewById(R.id.notesText);
+                notes = (notesBox.getText().toString().trim());
+                docRef.update("Notes", notes);
+
+            }
+        });
+    }
+}
