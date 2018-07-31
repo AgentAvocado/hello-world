@@ -1,0 +1,17 @@
+ document.add(new Paragraph("Dear <<<donor>>> ,\n" +
+              "Thank you so much for your generous donation to Laptop Upcycle!\n" +
+              "Our mission is to deliver technology solutions to low income families and your donation will truly make\n" +
+              "a difference. It will be used to help close the technology gap for low income students in our Public\n" +
+              "Schools. With all the wonderful nonprofits both in and around Montclair and nationally, we are pleased\n" +
+              "you chose to support us with your donation described below "));
+        document.add(new Paragraph("As per IRS regulations, you, the donor are responsible for the reporting of and valuation of this donation.\n" +
+                "Note that donations of equipment valued at more than $500.00 requires an IRS Form 8283 which may be\n" +
+                "found on the IRS.gov web site.\n" +
+                "For any comments, questions or possible donations or referrals to others that may support our mission\n" +
+                "please feel welcome to contact me at jb@laptopupcycle.org or 973-573-1668.\n" +
+                "Warmest regards,\n" +
+                "Jonathan W. Bonesteel, Co-Founder\n" +
+                "HackNCraftNJ, Inc. D.B. A. Laptop Upcycle is a non-profit organization under Internal Revenue Code Section\n" +
+                "501(c)3. Your donation may be tax deductible. For your benefit and as required by law, we state that\n" +
+                "HackNCraftNJ, Inc. D.B.A. Laptop Upcycle did not provide any goods or services in consideration, in whole or\n" +
+                "in part, for this contribution. Federal Tax ID# 47-1237352."));
